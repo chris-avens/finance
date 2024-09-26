@@ -1,11 +1,7 @@
 <script>
   import { getIndexYahoo, round } from "../utils";
 
-  let watchlist = [
-    { symbol: "AAPL", name: "Apple Inc.", price: 150, change: "-0.5%" },
-    { symbol: "GOOGL", name: "Alphabet Inc.", price: 2800, change: "+1.2%" },
-    { symbol: "BTC", name: "Bitcoin", price: 2800, change: "+1.2%" },
-  ];
+  let watchlist = [{ symbol: "AAPL" }, { symbol: "GOOGL" }, { symbol: "BTC" }];
   async function fillInData() {
     for await (const index of watchlist) {
       index.data = await getIndexYahoo(index.symbol);
@@ -37,20 +33,48 @@
         {#each watchlist as stock}
           <tr>
             <td>{stock.symbol}</td>
-            <td>{stock.name}</td>
+            <td>{stock.data.longName}</td>
             <td>{round(stock.data.open, 4)}</td>
             <td
-              class={stock.data.close > stock.data.open
+              class={stock.data.previousClose > stock.data.open
                 ? "positive"
                 : "negative"}
             >
-              {round(+stock.data.close - +stock.data.open, 4)}
+              {100 * round(+stock.data.previousClose / +stock.data.open - 1, 4)}
+              %
             </td>
-            <td>{round(stock.data.close, 4)}</td>
+            <td>{round(stock.data.previousClose, 4)}</td>
             <td>{round(stock.data.high, 4)}</td>
             <td>{round(stock.data.low, 4)}</td>
           </tr>
         {/each}
+      {:catch error}
+        <tr>
+          <td colspan="7">
+            <div class="fetch-error-text">
+              paste and access this link to your browser to trigger temporary
+              access to CORS
+            </div>
+            <div class="fetch-error-link">
+              https://cors-anywhere.herokuapp.com/https://query1.finance.yahoo.com/v8/finance/chart/AAPL
+            </div>
+            <div class="fetch-error-text">
+              then click
+              <span class="fetch-error-button">
+                Request temporary access to the demo server
+              </span>
+            </div>
+            <div class="fetch-error-text">
+              then go back here and reload the page
+            </div>
+          </td>
+        </tr>
+        <!-- <tr>
+          <td colspan="7">
+            <div>
+            </div>
+          </td>
+        </tr> -->
       {/await}
     </tbody>
   </table>
@@ -58,6 +82,7 @@
 
 <style>
   .watchlist {
+    margin: 0 2rem;
     padding: 2rem;
     background-color: #f9f9f9;
     border-radius: 5px;
@@ -91,7 +116,22 @@
 
   table div {
     color: rgb(91, 219, 166);
+  }
+  table div {
     text-align: center;
     width: 100%;
+  }
+
+  .fetch-error-text {
+    color: #1b1b1b;
+  }
+  .fetch-error-link {
+    color: #000b47;
+    text-decoration: underline;
+  }
+  .fetch-error-button {
+    background-color: rgb(219, 255, 219);
+    border-radius: 5px;
+    padding: 0px 10px;
   }
 </style>

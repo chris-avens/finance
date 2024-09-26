@@ -3,7 +3,7 @@
     { name: "S&P 500", value: 4500, change: "+1.5%" },
     { name: "NASDAQ", value: 15000, change: "+0.8%" },
     { name: "DOW", value: 35000, change: "+1.1%" },
-    { name: "PST", value: 12345, change: "-1.6%" },
+    // { name: "PST", value: 12345, change: "-1.6%" },
   ];
 </script>
 
@@ -33,12 +33,13 @@
   .indices {
     display: flex;
     justify-content: space-between;
+    gap: 2rem;
   }
 
   .index {
     flex: 1;
-    margin: 0 1rem;
-    padding: 1rem;
+    /* margin: 0 1rem; */
+    padding: 1rem 0;
     background-color: #fff;
     color: #242424;
     border: 1px solid #ccc;

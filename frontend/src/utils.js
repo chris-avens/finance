@@ -19,6 +19,7 @@ export async function getIndexYahoo(index) {
         //         .map(([key, arr]) => [key, arr.at(-1)])
         // ));
         return {
+            ...data.chart.result[0].meta,
             ...Object.fromEntries(
                 Object.entries(data.chart.result[0].indicators.quote[0])
                     .map(([key, arr]) => [key, arr.at(-1)])
